@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30px"
+        android:background="@color/material_deep_teal_500"
+        />
+
+
+    <Spinner
+    android:id="@+id/spinnerType"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:entries="@array/spinner"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30px"
+        android:background="@color/material_deep_teal_500"
+        android:id="@+id/space"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
+
+        <EditText
+            android:id="@+id/etContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Kontakt"
+            android:layout_marginLeft="10dp">
+
+            <requestFocus />
+        </EditText><ImageButton
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@android:drawable/ic_menu_search"
+        android:src="@android:drawable/ic_menu_search"
+        android:text="Kontakt"
+        android:visibility="visible" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30px" />
+
+    <EditText
+        android:id="@+id/etWhat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="Was"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30px" />
+
+    <EditText
+        android:id="@+id/etDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="Beschreibung"
+        android:inputType="textMultiLine" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30px" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" >
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@android:drawable/ic_menu_my_calendar"
+            android:src="@android:drawable/ic_menu_my_calendar" />
+
+        <EditText
+            android:id="@+id/etDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Datum"
+            android:inputType="date"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30px"
+        android:id="@+id/space2"/>
+
+    <CheckBox
+        android:id="@+id/cbCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Remind"
+        android:visibility="visible" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    </RelativeLayout>
+
+
+</LinearLayout>

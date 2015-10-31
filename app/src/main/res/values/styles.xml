@@ -1,0 +1,16 @@
+<ressources>
+
+<style name="AppTheme" parent="Theme.AppCompat.Light">
+    <!-- Set AppCompat’s actionBarStyle -->
+
+
+    <!-- Set AppCompat’s color theming attrs -->
+    <item name="colorPrimary">#3F51B5</item>
+    <item name="colorPrimaryDark">#1A237E</item>
+
+    <item name="colorAccent">#ECEFF1</item>
+
+    <!-- The rest of your attributes -->
+</style>
+
+    </ressources>
