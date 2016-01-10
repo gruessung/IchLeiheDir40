@@ -1,16 +1,33 @@
-<ressources>
-
-<style name="AppTheme" parent="Theme.AppCompat.Light">
-    <!-- Set AppCompat’s actionBarStyle -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
 
 
-    <!-- Set AppCompat’s color theming attrs -->
-    <item name="colorPrimary">#3F51B5</item>
-    <item name="colorPrimaryDark">#1A237E</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Set AppCompat’s actionBarStyle -->
 
-    <item name="colorAccent">#ECEFF1</item>
 
-    <!-- The rest of your attributes -->
-</style>
+        <!-- Set AppCompat’s color theming attrs -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/darkblue</item>
+        <item name="windowActionBar">false</item>
 
-    </ressources>
+
+
+        <item name="colorAccent">#ECEFF1</item>
+
+        <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+
+
+
+        <!-- The rest of your attributes -->
+    </style>
+
+
+    <style name="AppTheme.ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/blue</item>
+
+    </style>
+
+
+
+</resources>

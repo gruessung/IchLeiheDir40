@@ -3,6 +3,7 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="280dp"
+    android:background="@color/background_material_light"
     android:layout_margin="8dp">
 
     <RelativeLayout
