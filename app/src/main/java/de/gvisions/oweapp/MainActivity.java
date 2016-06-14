@@ -1,42 +1,19 @@
 package de.gvisions.oweapp;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.gvisions.oweapp.cards.ItemInfo;
-import de.gvisions.oweapp.cards.MainItemCard;
 import de.gvisions.oweapp.fragments.MainFragment;
+import de.gvisions.oweapp.fragments.NewItem;
+import de.gvisions.oweapp.fragments.NewItemFragment;
 import de.gvisions.oweapp.fragments.SettingsFragment;
-import de.gvisions.oweapp.services.DatabaseHelper;
+import de.gvisions.oweapp.fragments.ShowContactFragment;
 import de.madcyph3r.materialnavigationdrawer.MaterialNavigationDrawer;
 import de.madcyph3r.materialnavigationdrawer.activity.MaterialNavHeadItemActivity;
 import de.madcyph3r.materialnavigationdrawer.head.MaterialHeadItem;
@@ -44,15 +21,13 @@ import de.madcyph3r.materialnavigationdrawer.listener.MaterialSectionChangeListe
 import de.madcyph3r.materialnavigationdrawer.menu.MaterialMenu;
 import de.madcyph3r.materialnavigationdrawer.menu.item.section.MaterialItemSection;
 import de.madcyph3r.materialnavigationdrawer.menu.item.section.MaterialItemSectionFragment;
-import de.madcyph3r.materialnavigationdrawer.menu.item.style.MaterialItemDevisor;
-import de.madcyph3r.materialnavigationdrawer.menu.item.style.MaterialItemLabel;
 import de.madcyph3r.materialnavigationdrawer.tools.RoundedCornersDrawable;
 
 
 public class MainActivity extends MaterialNavHeadItemActivity {
 
 
-    private MaterialNavigationDrawer drawer = null;
+    public MaterialNavigationDrawer drawer = null;
     private String newTitle = "Ich leihe dir";
 
 
@@ -96,7 +71,8 @@ public class MainActivity extends MaterialNavHeadItemActivity {
 
         // create menu
         MaterialMenu menu = new MaterialMenu();
-        menu.add(new MaterialItemSectionFragment(this, "Ich leihe dir", new MainFragment(), "Ich leihe dir"));
+        menu.add(new MaterialItemSectionFragment(this, "Start", new MainFragment(), "Ich leihe dir"));
+        menu.add(new MaterialItemSectionFragment(this, "Neuer Eintrag"/*, getResources().getDrawable(R.drawable.ic_action_content_add)*/, new NewItemFragment(), "Neuer Eintrag"));
         menu.add(new MaterialItemSectionFragment(this, "Geteilte Inhalte", new MainFragment(), "Geteilte Inhalte"));
         menu.add(new MaterialItemSectionFragment(this, "Einstellungen", new SettingsFragment(), "Einstellungen"));
         menu.add(new MaterialItemSectionFragment(this, "Über", new MainFragment(), "Über"));
@@ -110,9 +86,14 @@ public class MainActivity extends MaterialNavHeadItemActivity {
             @Override
             public void onAfterChangeSection(MaterialItemSection newSection) {
                 newTitle = newSection.getTitle();
+                if (newTitle == "Start") {
+                    newTitle = "Ich leihe dir";
+                }
                 afterInit(savedInstanceState);
             }
         });
+
+
 
         // create Head Item
         final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_2x);
@@ -140,6 +121,18 @@ public class MainActivity extends MaterialNavHeadItemActivity {
         android.support.v7.app.ActionBar actionBar = this.getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF33B5E5")));
         actionBar.setTitle(newTitle);
+
+        Intent i = getIntent();
+        Log.d("AFTERINIT", "EXTRA: "+i.getStringExtra("start"));
+        if (i.getStringExtra("start") == "neu") {
+            changeFragment(new NewItem(), "Neuer Eintrag");
+        }
+
+/*        if(i.getAction() == "showContact") {
+            changeFragment(new ShowContactFragment(), "Kontakt: "+i.getType(), new MainFragment(), true);
+            getCurrentSectionFragment().select();
+        }
+*/
         Log.d("AFTERINIT", "AFTERINIT OK");
     }
 
@@ -148,4 +141,5 @@ public class MainActivity extends MaterialNavHeadItemActivity {
         super.onPostCreate(savedInstanceState);
         afterInit(savedInstanceState);
     }
+
 }

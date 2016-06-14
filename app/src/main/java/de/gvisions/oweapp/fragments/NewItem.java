@@ -1,4 +1,4 @@
-package de.gvisions.oweapp;
+package de.gvisions.oweapp.fragments;
 
 
 import java.util.Calendar;
@@ -20,13 +20,16 @@ import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -34,9 +37,10 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import de.gvisions.oweapp.R;
 import de.gvisions.oweapp.services.DatabaseHelper;
 
-public class NewItem extends ActionBarActivity {
+public class NewItem extends Fragment {
 
     Spinner spinner;
     EditText what;
@@ -65,11 +69,17 @@ public class NewItem extends ActionBarActivity {
     private static final int CONTACT_PICKER_RESULT = 1001;
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_new, container, false);
+    }
+
+    //@Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DATE_DIALOG_ID:
                 // set date picker as current date
-                return new DatePickerDialog(this, datePickerListener,
+                return new DatePickerDialog(getView().getContext(), datePickerListener,
                         year, month,day);
         }
         return null;
@@ -94,21 +104,20 @@ public class NewItem extends ActionBarActivity {
         }
     };
 
-    public void onCreate(Bundle icicle) {
+    public void onActivityCreated(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.new_item);
 
         SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(getBaseContext());
+                .getDefaultSharedPreferences(getView().getContext());
 
   //      ActionBar actionBar = getActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        select = (ImageButton) findViewById(R.id.button1);
-        date = (EditText) findViewById(R.id.etDate);
-        calendar = (CheckBox) findViewById(R.id.cbCalendar);
+        select = (ImageButton) getView().findViewById(R.id.button1);
+        date = (EditText) getView().findViewById(R.id.etDate);
+        calendar = (CheckBox) getView().findViewById(R.id.cbCalendar);
 
-        ibutton = (ImageButton) findViewById(R.id.imageButton);
+        ibutton = (ImageButton) getView().findViewById(R.id.imageButton);
 
         Boolean cbCal = prefs.getBoolean("defaultKalender",false);
         if (cbCal == false)
@@ -134,7 +143,7 @@ public class NewItem extends ActionBarActivity {
 
             @SuppressWarnings("deprecation")
             public void onClick(View v) {
-                showDialog(DATE_DIALOG_ID);
+                getActivity().showDialog(DATE_DIALOG_ID);
             }
         });
 
@@ -153,12 +162,12 @@ public class NewItem extends ActionBarActivity {
 
 
 
-        spinner = (Spinner) findViewById(R.id.spinnerType);
-        what = (EditText) findViewById(R.id.etWhat);
-        fromTo = (EditText) findViewById(R.id.etContact);
-        Desc = (EditText) findViewById(R.id.etDesc);
+        spinner = (Spinner) getView().findViewById(R.id.spinnerType);
+        what = (EditText) getView().findViewById(R.id.etWhat);
+        fromTo = (EditText) getView().findViewById(R.id.etContact);
+        Desc = (EditText) getView().findViewById(R.id.etDesc);
 
-        database = new DatabaseHelper(this);
+        database = new DatabaseHelper(getView().getContext());
         connection = database.getWritableDatabase();
 
 
@@ -176,7 +185,7 @@ public class NewItem extends ActionBarActivity {
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+        if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case CONTACT_PICKER_RESULT:
                     Cursor cursor = null;
@@ -189,7 +198,7 @@ public class NewItem extends ActionBarActivity {
 
                     String id, name1, phone, hasPhone;
                     int idx;
-                    Cursor cursor1 = getContentResolver().query(contactUri, null, null, null, null);
+                    Cursor cursor1 = getActivity().getContentResolver().query(contactUri, null, null, null, null);
                     if (cursor1.moveToFirst()) {
                         idx = cursor1.getColumnIndex(ContactsContract.Contacts._ID);
                         id = cursor1.getString(idx);
@@ -216,9 +225,9 @@ public class NewItem extends ActionBarActivity {
     }
 
 
-    @Override
+    //@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.activity_new, menu);
         return true;
     }
@@ -229,7 +238,7 @@ public class NewItem extends ActionBarActivity {
         switch (item.getItemId())
         {
             case android.R.id.home:
-                finish();
+                getActivity().finish();
                 return true;
             case R.id.menu_save:
                 //Daten sammeln
@@ -247,7 +256,7 @@ public class NewItem extends ActionBarActivity {
 
                 if (sWhat.isEmpty() || contact.isEmpty())
                 {
-                    Toast.makeText(this, "Leere Felder", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getView().getContext(), "Leere Felder", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -257,7 +266,7 @@ public class NewItem extends ActionBarActivity {
                     sWhat.replace(",", ".");
                     sDesc.replace(",", ".");
                     connection.execSQL("insert into owe(deadline, type, what, fromto, desc, contacturi) values (\'"+sDate+"\',\'"+spinnerPos+"\', \'"+sWhat+"\', \'"+contact+"\', \'"+sDesc+"\', \'"+contactUri+"\');");
-                    Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getView().getContext(), "OK", Toast.LENGTH_SHORT).show();
 
 
 
@@ -289,7 +298,7 @@ public class NewItem extends ActionBarActivity {
                         endMillis = endTime.getTimeInMillis();
 
                         // Insert Event
-                        ContentResolver cr = getContentResolver();
+                        ContentResolver cr = getActivity().getContentResolver();
                         ContentValues values = new ContentValues();
                         values.put(CalendarContract.Events.DTSTART, startMillis);
                         values.put(CalendarContract.Events.DTEND, endMillis);
@@ -303,7 +312,7 @@ public class NewItem extends ActionBarActivity {
                         String eventID = uri.getLastPathSegment();
 
                     }
-                    finish();
+                    getActivity().finish();
 
                 }
 

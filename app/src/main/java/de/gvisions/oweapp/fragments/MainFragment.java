@@ -5,26 +5,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.gvisions.oweapp.NewItem;
+import de.gvisions.oweapp.MainActivity;
 import de.gvisions.oweapp.R;
 import de.gvisions.oweapp.cards.ItemInfo;
 import de.gvisions.oweapp.cards.MainItemCard;
 import de.gvisions.oweapp.services.DatabaseHelper;
+import de.madcyph3r.materialnavigationdrawer.MaterialNavigationDrawer;
 
 /**
  * Created by alexa on 09.01.2016.
@@ -34,6 +31,8 @@ public class MainFragment extends Fragment {
     SQLiteOpenHelper database;
     SQLiteDatabase connection;
     RecyclerView oList;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,18 +49,6 @@ public class MainFragment extends Fragment {
 
         database = new DatabaseHelper(v.getContext());
         connection = database.getWritableDatabase();
-
-
-
-        FloatingActionButton myFab = (FloatingActionButton)  v.findViewById(R.id.myFAB);
-        myFab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                Intent i = new Intent(v.getContext(), NewItem.class);
-                startActivity(i);
-
-            }
-        });
 
         oList = (RecyclerView) v.findViewById(R.id.cardList);
         oList.setHasFixedSize(true);
