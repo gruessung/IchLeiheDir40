@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +26,12 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.gvisions.oweapp.R;
+import de.gvisions.oweapp.cards.ItemInfo;
+import de.gvisions.oweapp.cards.MainItemCard;
+import de.gvisions.oweapp.cards.SingleItem;
 import de.gvisions.oweapp.cards.SingleItemCard;
 import de.gvisions.oweapp.services.DatabaseHelper;
 import it.gmariotti.cardslib.library.cards.material.MaterialLargeImageCard;
@@ -56,11 +62,15 @@ public class ShowContactFragment extends Fragment {
     }
 
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         View v = getView();
+
+ 
 
         database = new DatabaseHelper(v.getContext());
         connection = database.getWritableDatabase();
@@ -70,48 +80,40 @@ public class ShowContactFragment extends Fragment {
         uriConctact = Uri.parse(localSharedPreferences.getString("aktuelleURI", "nix uri"));
         sName = localSharedPreferences.getString("aktuellerName", "nix name");
 
-        CardArrayRecyclerViewAdapter mCardArrayAdapter = new CardArrayRecyclerViewAdapter(getActivity(), createList());
 
         //Staggered grid view
-        CardRecyclerView mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.cardList2);
+        RecyclerView mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.cardList);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mCardArrayAdapter);
+
+        SingleItemCard mainItemCard = new SingleItemCard(createList(), v.getContext());
+        mRecyclerView.setAdapter(mainItemCard);
 
     }
 
-    public ArrayList<Card> createList() {
-        ArrayList<Card> cards = new ArrayList<Card>();
-
+    private List<SingleItem> createList()
+    {
+        List<SingleItem> oReturn = new ArrayList<SingleItem>();
 
         Log.d("URI ZUM SUCHEN", uriConctact.toString());
        final Cursor oResults = connection.rawQuery("SELECT contacturi, what, fromto, desc, type, deadline, foto FROM owe WHERE contacturi = '" + uriConctact.toString() + "'", null);
         while(oResults.moveToNext()) {
             Log.d("NEUE KARTE", oResults.getString(1));
+            final String sImage = oResults.getString(6);
+            Log.d("BILDPFAD", sImage);
+            SingleItem item = new SingleItem();
+            item.sContactUri = oResults.getString(0);
+            item.sTitle = oResults.getString(1);
+            item.sContact = oResults.getString(2);
+            item.sDescription = oResults.getString(3);
+            item.sType = oResults.getString(4);
+            item.sDatum = oResults.getString(5);
+            item.sFoto = sImage;
 
-            MaterialLargeImageCard card =
-                    MaterialLargeImageCard.with(getActivity())
-                            .setTextOverImage(oResults.getString(1))
-                            .setTitle(oResults.getString(5))
-                            .setSubTitle(oResults.getString(3))
-                            .useDrawableId(R.drawable.ild_header)
-                            .build();
-            cards.add(card);
-
+            oReturn.add(item);
         }
 
-        /*.useDrawableExternal(new MaterialLargeImageCard.DrawableExternal() {
-                                @Override
-                                public void setupInnerViewElements(ViewGroup parent, View viewImage) {
-
-                                    Picasso.with(getActivity())
-                                            .load(IMAGE_PATH+oResults.getString(6)) //URL/FILE
-                                            .into( (ImageView) viewImage);
-                                }
-                            })*/
-
-
-        return cards;
+        return oReturn;
     }
 
 }

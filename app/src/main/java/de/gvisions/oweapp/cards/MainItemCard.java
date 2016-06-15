@@ -88,37 +88,6 @@ public class MainItemCard extends RecyclerView.Adapter<MainItemCard.ItemViewHold
         }
         return BitmapFactory.decodeStream(input);
 
-/*
-
-        try {
-            Log.d("FOTO CONTACT_ID", id);
-            int iId = id.lastIndexOf("/");
-            id = id.substring(iId+1, id.length());
-            Log.d("FOTO CONTACT_ID2", String.valueOf(id));
-
-            Cursor cur = this.ctx.getContentResolver().query(
-                    ContactsContract.Data.CONTENT_URI,
-                    null,
-                    ContactsContract.Data.CONTACT_ID + "=" + id + " AND "
-                            + ContactsContract.Data.MIMETYPE + "='"
-                            + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'", null,
-                    null);
-            if (cur != null) {
-                if (!cur.moveToFirst()) {
-                    Log.d("FOTO", "KEIN FOTO");
-                    return null; // no photo
-                }
-            } else {
-                Log.d("FOTO", "FEHLER IN CURSOR");
-                return null; // error in cursor process
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long
-                .parseLong(id));
-        //return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);*/
     }
 
     @Override
@@ -135,22 +104,13 @@ public class MainItemCard extends RecyclerView.Adapter<MainItemCard.ItemViewHold
             @Override
             public void onClick(View v) {
 
-                //Toast.makeText(v.getContext(), "geklickt auf Karte "+ v.getTag(), Toast.LENGTH_SHORT).show();
-/*
-                Intent i = new Intent(v.getContext(), MainActivity.class);
-                i.setData(Uri.parse(v.getTag(R.string.tag1).toString()));
-                i.setAction("showContact");
-                i.setType(v.getTag(R.string.tag2).toString());
-                i.putExtra("uri", Uri.parse(v.getTag(R.string.tag1).toString()));
-                i.putExtra("name",v.getTag(R.string.tag2).toString());
-                v.getContext().startActivity(i);*/
 
                 SharedPreferences localSharedPreferences = v.getContext().getSharedPreferences("de.gvisions.oweapp", 0);
                 localSharedPreferences.edit().putString("aktuellerName", v.getTag(R.string.tag2).toString()).commit();
                 localSharedPreferences.edit().putString("aktuelleURI", v.getTag(R.string.tag1).toString()).commit();
 
 
-                ((MainActivity)v.getContext()).changeFragment(new ShowContactFragment(), "Kontakt: "+v.getTag(R.string.tag2).toString());
+                ((MainActivity)v.getContext()).changeFragment(new ShowContactFragment(), "Kontakt: "+v.getTag(R.string.tag2).toString(), new MainFragment(), true);
                 ((MainActivity)v.getContext()).getCurrentSectionFragment().select();
 
 
