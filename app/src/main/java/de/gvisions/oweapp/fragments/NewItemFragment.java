@@ -41,6 +41,7 @@ import com.commonsware.cwac.cam2.ZoomStyle;
 
 
 import java.io.File;
+import java.util.Calendar;
 
 import de.gvisions.oweapp.MainActivity;
 import de.gvisions.oweapp.R;
@@ -77,6 +78,8 @@ public class NewItemFragment extends Fragment  {
     EditText oBeschreibung;
     EditText oDatum;
     Button oSpeichern;
+
+    Switch oSwitch;
 
     SurfaceHolder surface;
 
@@ -163,6 +166,9 @@ public class NewItemFragment extends Fragment  {
         oKontaktBtn = (ImageView) getView().findViewById(R.id.btnKontakt);
         oKontakt.setEnabled(false);
         oDatumBtn = (ImageView) getView().findViewById(R.id.btnDatum);
+
+        oSwitch = (Switch) getView().findViewById(R.id.calSwitch);
+
         oKameraBtn = (ImageView) getView().findViewById(R.id.btnKamera);
 
         oKameraBtn.setOnClickListener(new View.OnClickListener() {
@@ -215,6 +221,9 @@ public class NewItemFragment extends Fragment  {
             @Override
             public void onClick(View v) {
 
+
+
+
                 //Daten sammeln
                 String sTitel = oTitel.getText().toString();
                 String sBeschreibung = oBeschreibung.getText().toString();
@@ -247,6 +256,33 @@ public class NewItemFragment extends Fragment  {
 
                     Intent i = new Intent(getActivity(), MainActivity.class);
                     startActivity(i);
+
+                    if (oSwitch.isChecked()) {
+                        Calendar cal = Calendar.getInstance();
+                        Log.d("DATUMTEST", sDatum);
+                        String[] datum = sDatum.;
+                        for(int i2 = 0; i2 < datum.length; i2++) {
+                            Log.d("DATUMTEST "+i2,datum[i2]);
+                        }
+                        int jahr = Integer.parseInt(datum[2]);
+                        int monat = Integer.parseInt(datum[1]);
+                        int tag = Integer.parseInt(datum[0]);
+
+                        String text = "";
+                        if (iRichtung == 0) {
+                            text = "Zurückgabe von " +sTitel+" an "+sKontakt;
+                        } else {
+                            text = "Du bekommst " +sTitel+" von "+sKontakt + " zurück";
+                        }
+
+                        cal.set(jahr, monat, tag);
+                        Intent intent = new Intent(Intent.ACTION_EDIT);
+                        intent.setType("vnd.android.cursor.item/event");
+                        intent.putExtra("beginTime", cal.getTimeInMillis());
+                        intent.putExtra("allDay", true);
+                        intent.putExtra("title", text);
+                        startActivity(intent);
+                    }
 
 
 

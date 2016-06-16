@@ -1,5 +1,6 @@
 package de.gvisions.oweapp;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -39,6 +40,18 @@ public class MainActivity extends MaterialNavHeadItemActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getFragmentManager();
+        int backCount = fragmentManager.getBackStackEntryCount();
+
+        if(backCount > 1) {
+            super.onBackPressed();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
@@ -74,7 +87,7 @@ public class MainActivity extends MaterialNavHeadItemActivity {
         menu.add(new MaterialItemSectionFragment(this, "Start", new MainFragment(), "Ich leihe dir"));
         menu.add(new MaterialItemSectionFragment(this, "Neuer Eintrag"/*, getResources().getDrawable(R.drawable.ic_action_content_add)*/, new NewItemFragment(), "Neuer Eintrag"));
         menu.add(new MaterialItemSectionFragment(this, "Geteilte Inhalte", new MainFragment(), "Geteilte Inhalte"));
-        menu.add(new MaterialItemSectionFragment(this, "Einstellungen", new SettingsFragment(), "Einstellungen"));
+        //menu.add(new MaterialItemSectionFragment(this, "Einstellungen", new SettingsFragment(), "Einstellungen"));
         menu.add(new MaterialItemSectionFragment(this, "Über", new MainFragment(), "Über"));
 
         drawer.setSectionChangeListener(new MaterialSectionChangeListener() {
@@ -86,8 +99,11 @@ public class MainActivity extends MaterialNavHeadItemActivity {
             @Override
             public void onAfterChangeSection(MaterialItemSection newSection) {
                 newTitle = newSection.getTitle();
+                Log.d("NEUERTITLE", newTitle);
                 if (newTitle == "Start") {
                     newTitle = "Ich leihe dir";
+                    //getFragmentManager().popBackStack();
+                    changeFragment(new MainFragment(), "Ich leihe dir", true);
                 }
                 afterInit(savedInstanceState);
             }

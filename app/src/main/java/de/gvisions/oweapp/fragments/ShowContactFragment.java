@@ -28,12 +28,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.gvisions.oweapp.MainActivity;
 import de.gvisions.oweapp.R;
 import de.gvisions.oweapp.cards.ItemInfo;
 import de.gvisions.oweapp.cards.MainItemCard;
 import de.gvisions.oweapp.cards.SingleItem;
 import de.gvisions.oweapp.cards.SingleItemCard;
 import de.gvisions.oweapp.services.DatabaseHelper;
+import de.madcyph3r.materialnavigationdrawer.MaterialNavigationDrawer;
 import it.gmariotti.cardslib.library.cards.material.MaterialLargeImageCard;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -70,7 +72,9 @@ public class ShowContactFragment extends Fragment {
 
         View v = getView();
 
- 
+        //setHasOptionsMenu(false);
+        //((MainActivity)v.getContext()).showActionBarMenuIcon(MaterialNavigationDrawer.ActionBarMenuItem.BACK);
+
 
         database = new DatabaseHelper(v.getContext());
         connection = database.getWritableDatabase();

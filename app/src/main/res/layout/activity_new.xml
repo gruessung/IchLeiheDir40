@@ -158,6 +158,13 @@
                     android:layout_marginBottom="10dp" />
             </LinearLayout>
 
+
+            <Switch
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Kalendereintrag erstellen"
+                android:id="@+id/calSwitch" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
