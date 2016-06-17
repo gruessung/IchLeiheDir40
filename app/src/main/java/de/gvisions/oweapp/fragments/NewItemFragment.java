@@ -42,6 +42,7 @@ import com.commonsware.cwac.cam2.ZoomStyle;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.EmptyStackException;
 
 import de.gvisions.oweapp.MainActivity;
 import de.gvisions.oweapp.R;
@@ -260,7 +261,7 @@ public class NewItemFragment extends Fragment  {
                     if (oSwitch.isChecked()) {
                         Calendar cal = Calendar.getInstance();
                         Log.d("DATUMTEST", sDatum);
-                        String[] datum = sDatum.;
+                        String[] datum = sDatum.split(".");
                         for(int i2 = 0; i2 < datum.length; i2++) {
                             Log.d("DATUMTEST "+i2,datum[i2]);
                         }
@@ -326,29 +327,33 @@ public class NewItemFragment extends Fragment  {
 
 
         if (requestCode == CONTACT_PICKER_RESULT) {
-            Uri result = data.getData();
-            String id = "0";
-            currentContactUri = data.getData();
-            Log.d("CONTACT URI", data.getData().toString());
-            Cursor c = getActivity().getContentResolver().query(
-                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                    ContactsContract.CommonDataKinds.Phone._ID + "=?",
-                    new String[]{result.getLastPathSegment()}, null);
-            if (c.getCount() >= 1 && c.moveToFirst()) {
-                final String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                Log.d("CONTACT ID GET", String.valueOf(c.getInt(c.getColumnIndex(ContactsContract.Data.CONTACT_ID))));
-                oKontakt.setText(name);
-                id = String.valueOf(c.getInt(c.getColumnIndex(ContactsContract.Data.CONTACT_ID)));
-            }
+            try {
+                Uri result = data.getData();
+                String id = "0";
+                currentContactUri = data.getData();
+                Log.d("CONTACT URI", data.getData().toString());
+                Cursor c = getActivity().getContentResolver().query(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                        ContactsContract.CommonDataKinds.Phone._ID + "=?",
+                        new String[]{result.getLastPathSegment()}, null);
+                if (c.getCount() >= 1 && c.moveToFirst()) {
+                    final String name = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    Log.d("CONTACT ID GET", String.valueOf(c.getInt(c.getColumnIndex(ContactsContract.Data.CONTACT_ID))));
+                    oKontakt.setText(name);
+                    id = String.valueOf(c.getInt(c.getColumnIndex(ContactsContract.Data.CONTACT_ID)));
+                }
 
-            c = getActivity().getContentResolver().query(result, null, null, null, null);
-            String key = null;
-            if (c != null && c.moveToFirst()) {
-                key = c.getString(c.getColumnIndex(ContactsContract.Data.LOOKUP_KEY));
-            }
-            String uri = "content://com.android.contacts/contacts/lookup/"+key+"/"+id;
+                c = getActivity().getContentResolver().query(result, null, null, null, null);
+                String key = null;
+                if (c != null && c.moveToFirst()) {
+                    key = c.getString(c.getColumnIndex(ContactsContract.Data.LOOKUP_KEY));
+                }
+                String uri = "content://com.android.contacts/contacts/lookup/" + key + "/" + id;
 
-            currentContactUri = Uri.parse(uri);
+                currentContactUri = Uri.parse(uri);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "Kein Kontakt gewählt", Toast.LENGTH_SHORT).show();
+            }
 
         }
     }
