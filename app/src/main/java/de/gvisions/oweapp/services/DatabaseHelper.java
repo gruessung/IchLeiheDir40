@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private Context context;
 
     private final static String DB_NAME = "oweapp";
-    private final static int DB_VERSION = 31;
+    private final static int DB_VERSION = 33;
 
     public DatabaseHelper(Context fragmentList) {
         super(
@@ -37,7 +37,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "        desc varchar(999),\n" +
                     "        type varchar(50),\n" +
                     "        deadline varchar(50),\n" +
-                    "        foto varchar(500)\n" +
+                    "        foto varchar(500),\n" +
+                    "        erstellt varchar(50)\n" +
                     "      )");
 
     }
@@ -47,7 +48,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         switch(VNew)
         {
             case 31:
-                db.execSQL("alter table owe add column foto varchar(500)");
+                db.execSQL("alter table owe add column foto varchar(500) default 0");
+                break;
+            case 33:
+                db.execSQL("alter table owe add column erstellt varchar(50) default 0");
                 break;
 
             default: break;

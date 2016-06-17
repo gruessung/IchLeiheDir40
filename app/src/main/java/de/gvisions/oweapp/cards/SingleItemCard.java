@@ -103,6 +103,7 @@ Log.d("TYPE", item.sType);
         }
 
         Log.d("TAGEDIGG", String.valueOf(iTage));
+        Log.d("TEST", "test");
 
         if (iTage > 4) {
             itemViewHolder.cardColor.setBackgroundColor(Color.GREEN);

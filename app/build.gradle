@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "de.gvisions.oweapp"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 400
-        versionName "4.0"
+        versionCode 401
+        versionName "4.0alpha2"
     }
     buildTypes {
         release {
@@ -31,24 +31,20 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.0.+'
-    compile 'com.android.support:cardview-v7:22.0.+'
-    compile 'com.android.support:recyclerview-v7:22.0.0'
-    compile 'com.android.support:design:22.+'
+    compile 'com.android.support:appcompat-v7:23.0.+'
+    compile 'com.android.support:cardview-v7:23.0.+'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:design:23.+'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'de.madcyph3r:materialDrawer:2.0.0@aar'
     compile 'com.github.machinarius:preferencefragment:0.1.1'
 
     compile 'com.commonsware.cwac:cam2:0.5.+'
 
-    //Core
-    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
+    compile 'com.frosquivel:magicalcamera:1.0'
 
-    //Optional for built-in cards
-    compile 'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
 
-    //Optional for RecyclerView
-    compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
+
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 

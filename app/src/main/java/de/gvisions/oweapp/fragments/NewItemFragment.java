@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -37,7 +38,7 @@ import android.widget.Toast;
 
 import com.commonsware.cwac.cam2.CameraActivity;
 import com.commonsware.cwac.cam2.ZoomStyle;
-
+import com.frosquivel.magicalcamera.MagicalCamera;
 
 
 import java.io.File;
@@ -88,6 +89,7 @@ public class NewItemFragment extends Fragment  {
     ImageView oKontaktBtn;
     ImageView oDatumBtn;
     ImageView oKameraBtn;
+    MagicalCamera magicalCamera;
 
     Switch oKalender;
 
@@ -97,6 +99,7 @@ public class NewItemFragment extends Fragment  {
     private MaterialNavigationDrawer drawer;
     private static final int REQUEST_CODE = 1337;
 
+    private int RESIZE_PHOTO_PIXELS_PERCENTAGE = 1000;
 
 
     int month, year, day;
@@ -110,9 +113,16 @@ public class NewItemFragment extends Fragment  {
         return inflater.inflate(R.layout.activity_new, container, false);
     }
 
+    public void datum() {
+        DatePickerFragment picker = new DatePickerFragment();
+        picker.setView(oDatum);
+        picker.show(getFragmentManager(), "datePicker");
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
+         magicalCamera = new MagicalCamera(getActivity(), RESIZE_PHOTO_PIXELS_PERCENTAGE);
 
 
         super.onActivityCreated(savedInstanceState);
@@ -165,7 +175,8 @@ public class NewItemFragment extends Fragment  {
         oSpeichern = (Button) v.findViewById(R.id.btnSpeichern);
 
         oKontaktBtn = (ImageView) getView().findViewById(R.id.btnKontakt);
-        oKontakt.setEnabled(false);
+        oKontakt.setFocusable(false);
+        oKontakt.setClickable(true);
         oDatumBtn = (ImageView) getView().findViewById(R.id.btnDatum);
 
         oSwitch = (Switch) getView().findViewById(R.id.calSwitch);
@@ -183,7 +194,7 @@ public class NewItemFragment extends Fragment  {
                 intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
                 startActivityForResult(intent, REQUEST_CODE);*/
-
+/*
                 Intent i=new CameraActivity.IntentBuilder(getActivity())
                         .skipConfirm()
                         .to(new File(IMAGE_PATH, "Image_" + curTime + ".jpg"))
@@ -193,24 +204,44 @@ public class NewItemFragment extends Fragment  {
                         .build();
 
 
-                startActivityForResult(i, 1337);
+                startActivityForResult(i, 1337);*/
+
+                if(magicalCamera.takeFragmentPhoto()){
+                    startActivityForResult(magicalCamera.getIntentFragment(),MagicalCamera.TAKE_PHOTO);
+                }
 
             }
         });
 
 
-        oDatum.setEnabled(false);
+        oDatum.setFocusable(false);
+        oDatum.setClickable(true);
 
         oDatumBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerFragment picker = new DatePickerFragment();
-                picker.setView(oDatum);
-                picker.show(getFragmentManager(), "datePicker");
+                datum();
             }
         });
 
+        oDatum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datum();
+            }
+        });
+
+
+
         oKontaktBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(intent, CONTACT_PICKER_RESULT);
+            }
+        });
+
+        oKontakt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
@@ -244,12 +275,15 @@ public class NewItemFragment extends Fragment  {
                     String sFoto = "";
                     if (bFoto == true) {
                             //"Image_"+curTime+".jpg"
-                        sFoto = "Image_"+String.valueOf(curTime)+".jpg";
+                        sFoto = "Image_"+String.valueOf(curTime)+".jpeg";
                     }
 
+                    Calendar c = Calendar.getInstance();
+                    String heute = c.get(Calendar.DAY_OF_MONTH)+"."+c.get(Calendar.MONTH)+"."+c.get(Calendar.YEAR);
 
-                    String sql = "INSERT INTO owe (contacturi, what, fromto, desc, type, deadline, foto) " +
-                                 "VALUES ('"+sKontaktUri+"', '"+sTitel+"', '"+sKontakt+"', '"+sBeschreibung+"', "+iRichtung+", '"+sDatum+"', '"+sFoto+"')";
+
+                    String sql = "INSERT INTO owe (contacturi, what, fromto, desc, type, deadline, foto, erstellt) " +
+                                 "VALUES ('"+sKontaktUri+"', '"+sTitel+"', '"+sKontakt+"', '"+sBeschreibung+"', "+iRichtung+", '"+sDatum+"', '"+sFoto+"', '"+heute+"')";
 
                     connection.execSQL(sql);
 
@@ -321,6 +355,21 @@ public class NewItemFragment extends Fragment  {
                 oKameraBtn.setImageBitmap(scaled);
                 bFoto = true;
 
+            }
+        }
+
+        if (requestCode == MagicalCamera.TAKE_PHOTO) {
+            magicalCamera.resultPhoto(requestCode, resultCode, data);
+
+            //with this form you obtain the bitmap
+            oKameraBtn.setImageBitmap(magicalCamera.getMyPhoto());
+
+            //if you need save your bitmap in device use this method
+            Log.d("IMAGE_PATH", IMAGE_PATH);
+            if(magicalCamera.savePhotoInMemoryDevice(magicalCamera.getMyPhoto(),"Image_"+curTime,IMAGE_PATH, MagicalCamera.JPEG, true)){
+                bFoto = true;
+            }else{
+                Toast.makeText(getActivity(), "Irgendwie konnte das Bild nicht gespeichert werden.", Toast.LENGTH_SHORT).show();
             }
         }
 

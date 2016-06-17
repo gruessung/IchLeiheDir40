@@ -36,12 +36,7 @@ import de.gvisions.oweapp.cards.SingleItem;
 import de.gvisions.oweapp.cards.SingleItemCard;
 import de.gvisions.oweapp.services.DatabaseHelper;
 import de.madcyph3r.materialnavigationdrawer.MaterialNavigationDrawer;
-import it.gmariotti.cardslib.library.cards.material.MaterialLargeImageCard;
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.internal.CardThumbnail;
-import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
-import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
+
 
 /**
  * Created by alexa on 09.01.2016.

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="magicalcamera-1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.frosquivel/magicalcamera/1.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.frosquivel/magicalcamera/1.0/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.frosquivel/magicalcamera/1.0/d31336cca493255077ba8af6dc5b1bc9c22d7fcc/magicalcamera-1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
