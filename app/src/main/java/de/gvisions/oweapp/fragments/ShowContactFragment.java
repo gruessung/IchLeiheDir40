@@ -102,9 +102,13 @@ public class ShowContactFragment extends Fragment {
         Log.d("URI ZUM SUCHEN", uriConctact.toString());
        final Cursor oResults = connection.rawQuery("SELECT contacturi, what, fromto, desc, type, deadline, foto FROM owe WHERE contacturi = '" + uriConctact.toString() + "'", null);
         while(oResults.moveToNext()) {
-            Log.d("NEUE KARTE", oResults.getString(1));
-            final String sImage = oResults.getString(6);
-            Log.d("BILDPFAD", sImage);
+
+            String sImage = oResults.getString(6);
+
+            if (sImage.isEmpty() || sImage == null) {
+                sImage = "";
+            }
+
             SingleItem item = new SingleItem();
             item.sContactUri = oResults.getString(0);
             item.sTitle = oResults.getString(1);
