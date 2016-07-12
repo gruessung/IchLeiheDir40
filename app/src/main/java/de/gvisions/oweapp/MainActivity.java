@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.widget.Toast;
 
 import de.gvisions.oweapp.fragments.MainFragment;
 import de.gvisions.oweapp.fragments.NewItem;
@@ -123,10 +124,7 @@ public class MainActivity extends MaterialNavHeadItemActivity {
         // load menu
         this.loadMenu(getCurrentHeadItem().getMenu());
 
-        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
-        localBuilder.setTitle("Achtung - Alpha Test!");
-        localBuilder.setMessage("Bitte pass auf!\nDiese Version besitzt noch lange nicht alle Features der alten Version!\nEs kann und es wird zu Fehlern kommen, die ihr mir gerne melden könnt.\nWenn ihr ein stabiles System wollt, dann verlasst bitte die Alpha und wechselt zur Version 3 zurück.").setPositiveButton("Ich habe verstanden!", null);
-        localBuilder.create().show();
+        Toast.makeText(this, "Dies ist eine Alphaversion.", Toast.LENGTH_SHORT).show();
 
 
 

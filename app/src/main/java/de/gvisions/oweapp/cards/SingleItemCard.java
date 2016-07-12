@@ -34,7 +34,7 @@ public class SingleItemCard extends RecyclerView.Adapter<SingleItemCard.ItemView
 
 
 
-    static final String IMAGE_PATH = Environment.getExternalStorageDirectory() + "/ichleihedir/";
+    static final String IMAGE_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/ichleihedir/";
 
     private List<SingleItem> itemList;
     private Context ctx;
@@ -118,7 +118,7 @@ Log.d("TYPE", item.sType);
         }
 
 
-
+        Log.d("FOTODATEI", "file://"+IMAGE_PATH+item.sFoto);
         Picasso.with(ctx)
                 .load("file://"+IMAGE_PATH+item.sFoto) //URL/FILE
                 .error(R.drawable.avatar_2x)

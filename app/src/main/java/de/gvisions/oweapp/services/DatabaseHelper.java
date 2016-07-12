@@ -7,6 +7,13 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import de.gvisions.oweapp.R;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -54,9 +61,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.execSQL("alter table owe add column erstellt varchar(50) default 0");
                 break;
 
+
             default: break;
         }
 
     }
+
+
 
 }

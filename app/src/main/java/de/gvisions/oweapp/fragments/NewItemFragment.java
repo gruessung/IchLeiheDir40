@@ -65,7 +65,7 @@ public class NewItemFragment extends Fragment  {
 
     SharedPreferences oPreference;
 
-    static final String IMAGE_PATH = Environment.getExternalStorageDirectory() + "/ichleihedir/";
+    static final String IMAGE_PATH = "ichleihedir";
     long curTime = System.currentTimeMillis();
 
     Boolean bFoto = false;
@@ -296,8 +296,9 @@ public class NewItemFragment extends Fragment  {
                         Calendar cal = Calendar.getInstance();
                         Log.d("DATUMTEST", sDatum);
                         String[] datum = sDatum.split(".");
+                        Log.d("LEANGE", String.valueOf(datum.length));
                         for(int i2 = 0; i2 < datum.length; i2++) {
-                            Log.d("DATUMTEST "+i2,datum[i2]);
+                            Log.d("DATUMTEST for "+i2,datum[i2]);
                         }
                         int jahr = Integer.parseInt(datum[2]);
                         int monat = Integer.parseInt(datum[1]);
@@ -359,6 +360,7 @@ public class NewItemFragment extends Fragment  {
         }
 
         if (requestCode == MagicalCamera.TAKE_PHOTO) {
+            Log.d("FOTO SPEICHERN", "BIN DRIN");
             magicalCamera.resultPhoto(requestCode, resultCode, data);
 
             //with this form you obtain the bitmap
@@ -366,7 +368,7 @@ public class NewItemFragment extends Fragment  {
 
             //if you need save your bitmap in device use this method
             Log.d("IMAGE_PATH", IMAGE_PATH);
-            if(magicalCamera.savePhotoInMemoryDevice(magicalCamera.getMyPhoto(),"Image_"+curTime,IMAGE_PATH, MagicalCamera.JPEG, true)){
+            if(magicalCamera.savePhotoInMemoryDevice(magicalCamera.getMyPhoto(),"Image_"+curTime,IMAGE_PATH, MagicalCamera.JPEG, false)){
                 bFoto = true;
             }else{
                 Toast.makeText(getActivity(), "Irgendwie konnte das Bild nicht gespeichert werden.", Toast.LENGTH_SHORT).show();
