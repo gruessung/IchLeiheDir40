@@ -96,7 +96,18 @@
 
                             android:padding="8dp"
                             android:textColor="#222" />
-                </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnShare"
+                        android:layout_marginRight="0dp"
+                        android:src="@drawable/abc_ic_menu_share_material"
+                        android:foregroundGravity="right"
+                        android:layout_gravity="left"
+                        android:padding="2dp" />
                 </LinearLayout>
 
             </LinearLayout>

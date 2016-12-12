@@ -1,9 +1,11 @@
 package de.gvisions.oweapp.cards;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -61,6 +64,7 @@ public class SingleItemCard extends RecyclerView.Adapter<SingleItemCard.ItemView
     public void onBindViewHolder(SingleItemCard.ItemViewHolder itemViewHolder, int i) {
 
         SingleItem item = itemList.get(i);
+        itemViewHolder.item = item;
         itemViewHolder.cardTitle.setText(item.sTitle);
         itemViewHolder.cardDescription.setText(item.sDescription);
         itemViewHolder.cardDatum.setText(item.sDatum);
@@ -129,6 +133,10 @@ Log.d("TYPE", item.sType);
         if (item.sFoto == "0" || item.sFoto.isEmpty() || item.sFoto == IMAGE_PATH) {
             itemViewHolder.cardImage.setVisibility(View.GONE);
         }
+
+
+
+
     }
 
     @Override
@@ -146,6 +154,8 @@ Log.d("TYPE", item.sType);
         protected LinearLayout cardColor;
         protected ImageView imageRichtung;
 
+        protected SingleItem item;
+
 
         public ItemViewHolder(View v)
         {
@@ -158,7 +168,41 @@ Log.d("TYPE", item.sType);
             cardDatum = (TextView) v.findViewById(R.id.datum);
             cardColor = (LinearLayout) v.findViewById(R.id.cardColor);
 
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ImageView imageView = new ImageView(v.getContext());
+
+                    Picasso.with(v.getContext())
+                            .load("file://"+IMAGE_PATH+item.sFoto) //URL/FILE
+                            .error(R.drawable.avatar_2x)
+                            .placeholder(R.drawable.access_point)
+                            .into(imageView);
+
+                    if (item.sFoto.isEmpty() == false) {
+
+                        AlertDialog dialog = new AlertDialog.Builder(v.getContext())
+                                .setView(imageView)
+                                .setTitle(item.sTitle)
+                                .setPositiveButton("Alles klar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).create();
+
+
+                        dialog.show();
+                    }
+
+                }
+            });
+
         }
+
+
+
+
 
 
     }
